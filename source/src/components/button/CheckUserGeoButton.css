@@ -1,0 +1,39 @@
+.check-geo-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.geo-btn {
+    background: var(--primary-btn-bg-color);
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-color);
+    padding: 0.75rem 1.8rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.geo-btn:hover:not(:disabled) {
+    background: var(--primary-btn-hover-color);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+.success-text {
+    font-size: 12px;
+    margin-top: 15px;
+    color: var(--text-color);
+}

@@ -1,0 +1,33 @@
+/* HeaderComponent.css */
+.header-comp {
+    background: var(--primary-btn-bg-color);
+    color: var(--text-color);
+    min-height: 35px;
+}
+
+.header-comp {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #fff !important;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.logo-title {
+    font-size: 21px;
+    font-weight: bold;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.logo-title:hover {
+    color: #fff;
+}
+
+@media(max-width: 456px) {
+    .logo-title {
+        font-size: 21px;
+        text-align: center;
+        justify-content: center;
+    }
+}

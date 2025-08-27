@@ -1,0 +1,33 @@
+/* CheckGeoPage.css */
+.check-geo-page {
+    color: var(--text-color);
+}
+
+.main-content {
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+}
+
+.main-content h1 {
+    font-size: 36px;
+}
+
+.main-content p {
+    font-size: 22px;
+    line-height: 1.6;
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        padding: 1.5rem;
+    }
+
+    .main-content h1 {
+        font-size: 28px;
+    }
+
+    .main-content p {
+        font-size: 18px;
+    }
+}

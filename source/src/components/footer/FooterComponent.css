@@ -1,0 +1,19 @@
+/* FooterComponent.css */
+.footer-com {
+    background: var(--primary-btn-bg-color);
+    padding: 5px;
+}
+
+small {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+    .footer-com .footer-nav,
+    .footer-com .footer-social {
+        margin-top: 1rem;
+    }
+}
