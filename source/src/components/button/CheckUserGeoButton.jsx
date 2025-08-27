@@ -1,16 +1,31 @@
-// CheckUserGeoButton.jsx
 import './CheckUserGeoButton.css';
 import { FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 
 const CheckUserGeoButton = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [webAppReady, setWebAppReady] = useState(false);
+
+    useEffect(() => {
+        if (window.Telegram?.WebApp) {
+            window.Telegram.WebApp.ready();
+            console.log('Telegram WebApp is ready');
+            setWebAppReady(true);
+        } else {
+            console.error('Telegram WebApp NOT found');
+        }
+    }, []);
 
     const handleCheckGeo = () => {
         if (!navigator.geolocation) {
             console.log('Geolocation is not supported by your browser.');
+            return;
+        }
+
+        if (!webAppReady) {
+            console.warn('Telegram WebApp not ready yet.');
             return;
         }
 
@@ -22,14 +37,15 @@ const CheckUserGeoButton = () => {
                 const { latitude, longitude } = position.coords;
                 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-                console.log('Latitude:', latitude);
-                console.log('Longitude:', longitude);
-                console.log('Timezone:', timezone);
+                console.log('Got coords:', { latitude, longitude, timezone });
 
-                if (window.Telegram?.WebApp) {
+                try {
                     window.Telegram.WebApp.sendData(
                         JSON.stringify({ latitude, longitude, timezone })
                     );
+                    console.log('WebApp data sent successfully');
+                } catch (err) {
+                    console.error('Error sending WebApp data:', err);
                 }
 
                 setLoading(false);
@@ -43,7 +59,6 @@ const CheckUserGeoButton = () => {
             { enableHighAccuracy: true }
         );
     };
-
 
     return (
         <div className="check-geo-btn text-center">
