@@ -2,30 +2,19 @@ import './CheckUserGeoButton.css';
 import { FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { initTelegramApp, sendDataToBot } from '../../telegram.js';
 
 const CheckUserGeoButton = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [webAppReady, setWebAppReady] = useState(false);
 
     useEffect(() => {
-        if (window.Telegram?.WebApp) {
-            window.Telegram.WebApp.ready();
-            console.log('Telegram WebApp is ready');
-            setWebAppReady(true);
-        } else {
-            console.error('Telegram WebApp NOT found');
-        }
+        initTelegramApp(); 
     }, []);
 
     const handleCheckGeo = () => {
         if (!navigator.geolocation) {
             console.log('Geolocation is not supported by your browser.');
-            return;
-        }
-
-        if (!webAppReady) {
-            console.warn('Telegram WebApp not ready yet.');
             return;
         }
 
@@ -40,9 +29,7 @@ const CheckUserGeoButton = () => {
                 console.log('Got coords:', { latitude, longitude, timezone });
 
                 try {
-                    window.Telegram.WebApp.sendData(
-                        JSON.stringify({ latitude, longitude, timezone })
-                    );
+                    sendDataToBot({ latitude, longitude, timezone }); 
                     console.log('WebApp data sent successfully');
                 } catch (err) {
                     console.error('Error sending WebApp data:', err);
