@@ -14,7 +14,7 @@ const CheckUserGeoButton = () => {
         const params = new URLSearchParams(window.location.search);
         setUserId(params.get("user_id"));
         setChatId(params.get("chat_id"));
-        setSwitchType(params.get("type"));
+        setSwitchType(params.get("type") || "default");
     }, []);
 
     const handleCheckGeo = async () => {
@@ -32,7 +32,7 @@ const CheckUserGeoButton = () => {
             user_id: parseInt(userId, 10),
             chat_id: parseInt(chatId, 10),
             timezone,
-            switch_type: switchType,
+            switch_type: switchType || "default",
         };
 
         console.log("Sending geo payload:", payload);
