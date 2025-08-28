@@ -1,14 +1,13 @@
 /* FooterComponent.css */
 .footer-com {
-    background: var(--primary-btn-bg-color);
-    padding: 5px;
+    padding: 25px;
 }
 
 small {
     font-size: 12px;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: var(--text-color);
+    color: var(--primary-btn-bg-color);
 }
 
 @media (max-width: 768px) {

@@ -1,50 +1,59 @@
 import './CheckUserGeoButton.css';
-import { FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { FaMapMarkerAlt, FaCheck } from 'react-icons/fa';
 import { Spinner } from 'react-bootstrap';
-import { initTelegramApp, sendDataToBot } from '../../telegram.js';
 
 const CheckUserGeoButton = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [userId, setUserId] = useState(null);
+    const [chatId, setChatId] = useState(null);
 
     useEffect(() => {
-        initTelegramApp(); 
+        const params = new URLSearchParams(window.location.search);
+        setUserId(params.get("user_id"));
+        setChatId(params.get("chat_id"));
     }, []);
 
-    const handleCheckGeo = () => {
-        if (!navigator.geolocation) {
-            console.log('Geolocation is not supported by your browser.');
+    const handleCheckGeo = async () => {
+        if (!userId || !chatId) {
+            console.error("❌ Missing user_id or chat_id in URL");
             return;
         }
 
         setLoading(true);
         setSuccess(false);
 
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-                console.log('Got coords:', { latitude, longitude, timezone });
+        const payload = {
+            user_id: parseInt(userId, 10),
+            chat_id: parseInt(chatId, 10),
+            timezone
+        };
 
-                try {
-                    sendDataToBot({ latitude, longitude, timezone }); 
-                    console.log('WebApp data sent successfully');
-                } catch (err) {
-                    console.error('Error sending WebApp data:', err);
-                }
+        console.log("Sending geo payload:", payload);
 
-                setLoading(false);
+        try {
+            const res = await fetch("/api/check-geo-data", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (res.ok) {
+                console.log("✅ Geo data sent successfully");
                 setSuccess(true);
-            },
-            (error) => {
-                console.error('Error getting location:', error);
-                setLoading(false);
-                setSuccess(false);
-            },
-            { enableHighAccuracy: true }
-        );
+            } else {
+                console.error("❌ Failed to send geo data:", res.statusText);
+            }
+        } catch (err) {
+            console.error("❌ Error sending geo data:", err);
+        }
+
+        setLoading(false);
     };
 
     return (
@@ -75,7 +84,7 @@ const CheckUserGeoButton = () => {
             </button>
             {success && (
                 <div className="success-text mt-2">
-                    Geo-Data collected successfully!
+                    Timezone saved successfully!
                 </div>
             )}
         </div>
