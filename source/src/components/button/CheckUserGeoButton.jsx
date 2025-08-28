@@ -8,11 +8,13 @@ const CheckUserGeoButton = () => {
     const [success, setSuccess] = useState(false);
     const [userId, setUserId] = useState(null);
     const [chatId, setChatId] = useState(null);
+    const [switchType, setSwitchType] = useState(null);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         setUserId(params.get("user_id"));
         setChatId(params.get("chat_id"));
+        setSwitchType(params.get("type"));
     }, []);
 
     const handleCheckGeo = async () => {
@@ -29,7 +31,8 @@ const CheckUserGeoButton = () => {
         const payload = {
             user_id: parseInt(userId, 10),
             chat_id: parseInt(chatId, 10),
-            timezone
+            timezone,
+            switch_type: switchType,
         };
 
         console.log("Sending geo payload:", payload);
